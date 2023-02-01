@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,13 +51,30 @@ class DBFacadeTest {
 
 
     @Test
-    public void test() throws SQLException {
+    public void testAll() throws SQLException {
         System.out.println("Testing DB connection to see first name of user");
-        String sql = "SELECT fname FROM startcode_test.usertable";
-        try (ResultSet set = con.prepareStatement(sql).executeQuery()) {
-            set.next();
-            String actual = set.getString("fname");
-            assertEquals("Hans", actual);
-        }
+        DBMapper dbMapper = new DBMapper();
+        ArrayList<String> list = dbMapper.allNames();
+        assertEquals("Hans", list.get(0));
+    }
+
+    @Test
+    public void testSpecific() throws SQLException {
+        System.out.println("Testing DB connection to see first name of user");
+        DBMapper dbMapper = new DBMapper();
+        ArrayList<String> list = dbMapper.specificUser("Hans");
+        assertEquals("Hans", list.get(0));
+        assertEquals("Hansen", list.get(1));
+        assertEquals("Hemmelig123", list.get(2));
+        assertEquals("40404040", list.get(3));
+        assertEquals("Rolighedsvej 3", list.get(4));
+    }
+
+    @Test
+    public void testEdit() throws SQLException {
+        System.out.println("Testing DB connection to see first name of user");
+        DBMapper dbMapper = new DBMapper();
+        int affected = dbMapper.editUser("Jens", "Hans", "fname");
+        assertEquals(1, affected);
     }
 }
