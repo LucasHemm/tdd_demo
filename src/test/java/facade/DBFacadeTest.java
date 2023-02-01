@@ -56,12 +56,7 @@ class DBFacadeTest {
         try (ResultSet set = con.prepareStatement(sql).executeQuery()) {
             set.next();
             String actual = set.getString("fname");
-
-            assertEquals("Hans",actual);
-
+            assertEquals("Hans", actual);
         }
-
     }
-
-
 }
